@@ -57,12 +57,14 @@ o:value("vmess", "VMess")
 -- Settings Blackhole
 o = s:option(ListValue, "s_blackhole_reponse_type", "%s - %s" % { "Blackhole", translate("Response type") } )
 o:depends("protocol", "blackhole")
+o:value("")
 o:value("none", translate("None"))
 o:value("http", "HTTP")
 
 -- Settings DNS
 o = s:option(ListValue, "s_dns_network", "%s - %s" % { "DNS", translate("Network") } )
 o:depends("protocol", "dns")
+o:value("")
 o:value("tcp", "TCP")
 o:value("udp", "UDP")
 
@@ -77,11 +79,11 @@ o.datatype = "port"
 -- Settings Freedom
 o = s:option(ListValue, "s_freedom_domain_strategy", "%s - %s" % { "Freedom", translate("Domain strategy") } )
 o:depends("protocol", "freedom")
+o:value("")
 o:value("AsIs")
 o:value("UseIP")
 o:value("UseIPv4")
 o:value("UseIPv6")
-o.default = "AsIs"
 
 o = s:option(Value, "s_freedom_redirect", "%s - %s" % { "Freedom", translate("Redirect") } )
 o:depends("protocol", "freedom")
@@ -175,6 +177,7 @@ o:depends("protocol", "vmess")
 
 o = s:option(ListValue, "s_vmess_user_security", "%s - %s" % { "VMess", translate("Security") })
 o:depends("protocol", "vmess")
+o:value("")
 o:value("auto", translate("Auto"))
 o:value("aes-128-gcm")
 o:value("chacha20-poly1305")
@@ -186,6 +189,7 @@ o.datatype = "uinteger"
 
 -- Stream Settings
 o = s:option(ListValue, "ss_network", "%s - %s" % { translate("Stream settings"), translate("Network") })
+o:value("")
 o:value("tcp", "TCP")
 o:value("kcp", "mKCP")
 o:value("ws", "WebSocket")
@@ -194,9 +198,9 @@ o:value("domainsocket", "Domain Socket")
 o:value("quic", "QUIC")
 
 o = s:option(ListValue, "ss_security", "%s - %s" % { translate("Stream settings"), translate("Security") })
+o:value("")
 o:value("none", translate("None"))
 o:value("tls", "TLS")
-o.default = "none"
 
 -- Stream Settings - TLS
 o = s:option(Value, "ss_tls_server_name", "%s - %s" % { "TLS", translate("Server name") })
@@ -204,7 +208,7 @@ o:depends("ss_security", "tls")
 
 o = s:option(DynamicList, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
 o:depends("ss_security", "tls")
-o.default = "http/1.1"
+o.placeholder = "http/1.1"
 
 o = s:option(Flag, "ss_tls_allow_insecure", "%s - %s" % { "TLS", translate("Allow insecure") })
 o:depends("ss_security", "tls")
@@ -217,6 +221,7 @@ o:depends("ss_security", "tls")
 
 o = s:option(ListValue, "ss_tls_cert_usage", "%s - %s" % { "TLS", translate("Certificate usage") })
 o:depends("ss_security", "tls")
+o:value("")
 o:value("encipherment")
 o:value("verify")
 o:value("issue")
@@ -230,6 +235,7 @@ o:depends("ss_security", "tls")
 -- Stream Settings - TCP
 o = s:option(ListValue, "ss_tcp_header_type", "%s - %s" % { "TCP", translate("Header type") })
 o:depends("ss_network", "tcp")
+o:value("")
 o:value("none", translate("None"))
 o:value("http", "HTTP")
 
@@ -238,6 +244,7 @@ o:depends("ss_tcp_header_type", "http")
 
 o = s:option(ListValue, "ss_tcp_header_request_method", "%s - %s" % { "TCP", translate("HTTP request method") })
 o:depends("ss_tcp_header_type", "http")
+o:value("")
 o:value("GET")
 o:value("HEAD")
 o:value("POST")
@@ -298,6 +305,7 @@ o.placeholder = "2"
 
 o = s:option(ListValue, "ss_kcp_header_type", "%s - %s" % { "mKCP", translate("Header type") })
 o:depends("ss_network", "kcp")
+o:value("")
 o:value("none", translate("None"))
 o:value("srtp", "SRTP")
 o:value("utp", "uTP")
@@ -336,6 +344,7 @@ o:depends("ss_quic_security", "chacha20-poly1305")
 
 o = s:option(ListValue, "ss_quic_header_type", "%s - %s" % { "QUIC", translate("Header type") })
 o:depends("ss_network", "quic")
+o:value("")
 o:value("none", translate("None"))
 o:value("srtp", "SRTP")
 o:value("utp", "uTP")

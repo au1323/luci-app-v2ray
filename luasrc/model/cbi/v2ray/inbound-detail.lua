@@ -70,7 +70,6 @@ o = s:option(MultiValue, "s_dokodemo_door_network", "%s - %s" % { "Dokodemo-door
 o:depends("protocol", "dokodemo-door")
 o:value("tcp")
 o:value("udp")
-o.default = "tcp"
 
 o = s:option(Value, "s_dokodemo_door_timeout", "%s - %s" % { "Dokodemo-door", translate("Timeout") },
 	translate("Time limit for inbound data(seconds)"))
@@ -152,7 +151,6 @@ o = s:option(MultiValue, "s_shadowsocks_network", "%s - %s" % { "Shadowsocks", t
 o:depends("protocol", "shadowsocks")
 o:value("tcp")
 o:value("udp")
-o.default = "tcp"
 
 -- Settings - Socks
 o = s:option(Value, "s_socks_auth", "%s - %s" % { "Socks", translate("Auth") })
@@ -214,6 +212,7 @@ o:depends("protocol", "vmess")
 
 -- Stream Settings
 o = s:option(ListValue, "ss_network", "%s - %s" % { translate("Stream settings"), translate("Network") })
+o:value("")
 o:value("tcp", "TCP")
 o:value("kcp", "mKCP")
 o:value("ws", "WebSocket")
@@ -222,9 +221,9 @@ o:value("domainsocket", "Domain Socket")
 o:value("quic", "QUIC")
 
 o = s:option(ListValue, "ss_security", "%s - %s" % { translate("Stream settings"), translate("Security") })
+o:value("")
 o:value("none", translate("None"))
 o:value("tls", "TLS")
-o.default = "none"
 
 -- Stream Settings - TLS
 o = s:option(Value, "ss_tls_server_name", "%s - %s" % { "TLS", translate("Server name") })
@@ -232,7 +231,7 @@ o:depends("ss_security", "tls")
 
 o = s:option(DynamicList, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
 o:depends("ss_security", "tls")
-o.default = "http/1.1"
+o.placeholder = "http/1.1"
 
 o = s:option(Flag, "ss_tls_allow_insecure", "%s - %s" % { "TLS", translate("Allow insecure") })
 o:depends("ss_security", "tls")
@@ -245,6 +244,7 @@ o:depends("ss_security", "tls")
 
 o = s:option(ListValue, "ss_tls_cert_usage", "%s - %s" % { "TLS", translate("Certificate usage") })
 o:depends("ss_security", "tls")
+o:value("")
 o:value("encipherment")
 o:value("verify")
 o:value("issue")
@@ -258,6 +258,7 @@ o:depends("ss_security", "tls")
 -- Stream Settings - TCP
 o = s:option(ListValue, "ss_tcp_header_type", "%s - %s" % { "TCP", translate("Header type") })
 o:depends("ss_network", "tcp")
+o:value("")
 o:value("none", translate("None"))
 o:value("http", "HTTP")
 
@@ -266,6 +267,7 @@ o:depends("ss_tcp_header_type", "http")
 
 o = s:option(ListValue, "ss_tcp_header_request_method", "%s - %s" % { "TCP", translate("HTTP request method") })
 o:depends("ss_tcp_header_type", "http")
+o:value("")
 o:value("GET")
 o:value("HEAD")
 o:value("POST")
@@ -326,6 +328,7 @@ o.placeholder = "2"
 
 o = s:option(ListValue, "ss_kcp_header_type", "%s - %s" % { "mKCP", translate("Header type") })
 o:depends("ss_network", "kcp")
+o:value("")
 o:value("none", translate("None"))
 o:value("srtp", "SRTP")
 o:value("utp", "uTP")
@@ -364,6 +367,7 @@ o:depends("ss_quic_security", "chacha20-poly1305")
 
 o = s:option(ListValue, "ss_quic_header_type", "%s - %s" % { "QUIC", translate("Header type") })
 o:depends("ss_network", "quic")
+o:value("")
 o:value("none", translate("None"))
 o:value("srtp", "SRTP")
 o:value("utp", "uTP")
@@ -372,9 +376,10 @@ o:value("dtls", "DTLS 1.2")
 o:value("wireguard", "WireGuard")
 
 -- Stream Settings - Socket Options
-o = s:option(Flag, "ss_sockopt_tcp_fast_open", "%s - %s" % { translate("Socket options"), translate("TCP fast open") })
+o = s:option(Flag, "ss_sockopt_tcp_fast_open", "%s - %s" % { translate("Sockopt"), translate("TCP fast open") })
 
-o = s:option(ListValue, "ss_sockopt_tproxy", "%s - %s" % { translate("Socket options"), translate("TProxy") })
+o = s:option(ListValue, "ss_sockopt_tproxy", "%s - %s" % { translate("Sockopt"), translate("TProxy") })
+o:value("")
 o:value("redirect", "Redirect")
 o:value("tproxy", "TProxy")
 o:value("off", translate("Off"))
