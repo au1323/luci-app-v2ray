@@ -170,7 +170,7 @@ dns_server_section_validate() {
 routing_section_validate() {
 	uci_validate_section "$NAME" "routing" "$1" \
 		'enabled:bool:0' \
-		'domain_strategy:or("AsIs", "IPIfNonMatch", "IPOnDemand"):AsIs' \
+		'domain_strategy:or("AsIs", "IPIfNonMatch", "IPOnDemand")' \
 		'rules:list(uci("v2ray", "@routing_rule"))' \
 		'balancers:list(uci("v2ray", "@routing_balancer"))'
 }
@@ -537,7 +537,8 @@ add_routing_settings() {
 
 	json_add_object "routing"
 
-	json_add_string "domainStrategy" "$domain_strategy"
+	test -n "$domain_strategy" && \
+		json_add_string "domainStrategy" "$domain_strategy"
 
 	if [ -n "$rules" ] ; then
 		json_add_array "rules"
