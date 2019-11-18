@@ -22,20 +22,6 @@ s.create = function (...)
 		return
 	end
 end
-s.remove = function (self, section)
-	local settings_key = self.map:get(section, "settings") or ""
-	local stream_settings_key = self.map:get(section, "stream_settings") or ""
-
-	if settings_key ~= "" then
-		v2ray.remove_setting(settings_key)
-	end
-
-	if stream_settings_key ~= "" then
-		v2ray.remove_stream_setting(stream_settings_key)
-	end
-
-	return TypedSection.remove(self, section)
-end
 
 o = s:option(DummyValue, "alias", translate("Alias"))
 o.cfgvalue = function (...)
@@ -56,5 +42,12 @@ o = s:option(DummyValue, "tag", translate("Tag"))
 o.cfgvalue = function (...)
 	return Value.cfgvalue(...) or "?"
 end
+
+o = s:option(DummyValue, "mtu", translate("MTU"))
+o.cfgvalue = function (...)
+	local v = Value.cfgvalue(...)
+	return v == "1" and translate("True") or translate("False")
+end
+
 
 return m

@@ -13,10 +13,6 @@ local sid = arg[1]
 m = Map("v2ray", "%s - %s" % { translate("V2Ray"), translate("Edit Inbound") },
 	translatef("Details: %s", "<a href=\"https://www.v2ray.com/en/configuration/overview.html#inboundobject\" target=\"_blank\">InboundObject</a>"))
 m.redirect = dsp.build_url("admin/services/v2ray/inbounds")
-m.apply_on_parse = true
-m.on_after_apply = function ()
-	sys.call("/etc/init.d/v2ray reload 2>/dev/null")
-end
 
 if m.uci:get("v2ray", sid) ~= "inbound" then
 	luci.http.redirect(m.redirect)
@@ -197,7 +193,7 @@ o.datatype = "and('uinteger', max(65535))"
 o = s:option(Value, "s_vmess_client_email", "%s - %s" % { "VMess", translate("Client email") })
 o:depends("protocol", "vmess")
 
-o = s:option(Value, "s_vmess_client_level", "%s - %s" % { "VMess", translate("Client level") })
+o = s:option(Value, "s_vmess_client_user_level", "%s - %s" % { "VMess", translate("Client User level") })
 o:depends("protocol", "vmess")
 o.datatype = "uinteger"
 
@@ -205,7 +201,7 @@ o = s:option(Value, "s_vmess_default_alter_id", "%s - %s" % { "VMess", translate
 o:depends("protocol", "vmess")
 o.datatype = "and('uinteger', max(65535))"
 
-o = s:option(Value, "s_vmess_default_level", "%s - %s" % { "VMess", translate("Default level") })
+o = s:option(Value, "s_vmess_default_user_level", "%s - %s" % { "VMess", translate("Default user level") })
 o:depends("protocol", "vmess")
 o.datatype = "uinteger"
 
@@ -376,9 +372,6 @@ o:value("dtls", "DTLS 1.2")
 o:value("wireguard", "WireGuard")
 
 -- Stream Settings - Socket Options
-o = s:option(Value, "ss_sockopt_mark", "%s - %s" % { translate("Socket options"), translate("Mark") })
-o.placeholder = "255"
-
 o = s:option(Flag, "ss_sockopt_tcp_fast_open", "%s - %s" % { translate("Socket options"), translate("TCP fast open") })
 
 o = s:option(ListValue, "ss_sockopt_tproxy", "%s - %s" % { translate("Socket options"), translate("TProxy") })
