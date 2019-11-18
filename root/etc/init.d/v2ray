@@ -229,8 +229,77 @@ inbound_section_validate() {
 		'port:or(port, portrange, string)' \
 		'listen:ipaddr:0.0.0.0' \
 		'protocol:string' \
-		'settings:string' \
-		'stream_settings:string' \
+		's_dokodemo_door_address:host' \
+		's_dokodemo_door_port:port' \
+		's_dokodemo_door_network:list(or("tcp", "udp"))' \
+		's_dokodemo_door_timeout:uinteger' \
+		's_dokodemo_door_follow_redirect:bool:0' \
+		's_dokodemo_door_user_level:uiterger' \
+		's_http_account_user:string' \
+		's_http_account_pass:string' \
+		's_http_allow_transparent:bool:0' \
+		's_http_timeout:uinteger' \
+		's_http_user_level:uinteger' \
+		's_mtproto_user_email:string' \
+		's_mtproto_user_secret:string' \
+		's_mtproto_user_level:uinteger' \
+		's_shadowsocks_email:string' \
+		's_shadowsocks_method:string' \
+		's_shadowsocks_password:string' \
+		's_shadowsocks_level:uinteger' \
+		's_shadowsocks_ota:bool:0' \
+		's_shadowsocks_network:list(or("tcp", "udp"))' \
+		's_socks_auth:or("noauth", "password")' \
+		's_socks_account_user:string' \
+		's_socks_account_pass:string' \
+		's_socks_udp:bool:0' \
+		's_socks_ip:host' \
+		's_socks_user_level:uinteger' \
+		's_vmess_client_id:string' \
+		's_vmess_client_alter_id:and("uinteger", max(65535))' \
+		's_vmess_client_email:string' \
+		's_vmess_client_user_level:uinteger' \
+		's_vmess_default_alter_id:and("uinteger", max(65535))' \
+		's_vmess_default_user_level:uinteger' \
+		's_vmess_detour_to:string' \
+		's_vmess_disable_insecure_encryption:bool:0' \
+		'ss_network:or("tcp", "kcp", "ws", "http", "domainsocket", "quic")' \
+		'ss_security:or("none", "tls")' \
+		'ss_tls_server_name:host' \
+		'ss_tls_alpn:string' \
+		'ss_tls_allow_insecure:bool:0' \
+		'ss_tls_allow_insecure_ciphers:bool:0' \
+		'ss_tls_disable_system_root:bool:0' \
+		'ss_tls_cert_usage:string' \
+		'ss_tls_cert_fiile:string' \
+		'ss_tls_key_file:string' \
+		'ss_tcp_header_type:or("none", "http")' \
+		'ss_tcp_header_request_version:string' \
+		'ss_tcp_header_request_method:string' \
+		'ss_tcp_header_request_path:string' \
+		'ss_tcp_header_request_headers:list(string)' \
+		'ss_tcp_header_response_version:string' \
+		'ss_tcp_header_response_status:string' \
+		'ss_tcp_header_response_reason:string' \
+		'ss_tcp_header_response_headers:list(string)' \
+		'ss_kcp_mtu:and(min(576), max(1460))' \
+		'ss_kcp_tti:and(min(10), max(100))' \
+		'ss_kcp_uplink_capacity:uinteger' \
+		'ss_kcp_downlink_capacity:uinteger' \
+		'ss_kcp_congestion:bool:0' \
+		'ss_kcp_read_buffer_size:uinteger' \
+		'ss_kcp_write_buffer_size:uinteger' \
+		'ss_kcp_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
+		'ss_websocket_path:string' \
+		'ss_websocket_headers:list(string)' \
+		'ss_http_host:list(string)' \
+		'ss_http_path:string' \
+		'ss_domainsocket_path:string' \
+		'ss_quic_security:string' \
+		'ss_quic_key:string' \
+		'ss_quic_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
+		'ss_sockopt_tcp_fast_open:bool:0' \
+		'ss_sockopt_tproxy:string' \
 		'tag:string' \
 		'sniffing_enabled:bool:0' \
 		'sniffing_dest_override:list(or("http", "tls"))' \

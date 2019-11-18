@@ -260,13 +260,13 @@ o:depends("ss_tcp_header_type", "http")
 o = s:option(DynamicList, "ss_tcp_header_request_headers", "%s - %s" % { "TCP", translate("Request headers") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_version", "%s - %s" % { "TCP", translate("HTTP response version") })
+o = s:option(Value, "ss_tcp_header_response_version", "%s - %s" % { "TCP", translate("HTTP response version") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_status", "%s - %s" % { "TCP", translate("HTTP response status") })
+o = s:option(Value, "ss_tcp_header_response_status", "%s - %s" % { "TCP", translate("HTTP response status") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_reason", "%s - %s" % { "TCP", translate("HTTP response reason") })
+o = s:option(Value, "ss_tcp_header_response_reason", "%s - %s" % { "TCP", translate("HTTP response reason") })
 o:depends("ss_tcp_header_type", "http")
 
 o = s:option(DynamicList, "ss_tcp_header_response_headers", "%s - %s" % { "TCP", translate("Response headers") })
@@ -335,6 +335,7 @@ o:depends("ss_network", "domainsocket")
 -- Stream Settings - QUIC
 o = s:option(Value, "ss_quic_security", "%s - %s" % { "QUIC", translate("Security") })
 o:depends("ss_network", "quic")
+o:value("")
 o:value("none", translate("None"))
 o:value("aes-128-gcm")
 o:value("chacha20-poly1305")

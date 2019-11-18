@@ -49,12 +49,12 @@ o.rmempty = false
 o.datatype = "or(port, portrange)"
 
 o = s:option(ListValue, "protocol", translate("Protocol"))
-o:value("dokodemo-door")
-o:value("http")
-o:value("mtproto")
-o:value("shadowsocks")
-o:value("socks")
-o:value("vmess")
+o:value("dokodemo-door", "Dokodemo-door")
+o:value("http", "HTTP")
+o:value("mtproto", "MTProto")
+o:value("shadowsocks", "Shadowsocks")
+o:value("socks", "Socks")
+o:value("vmess", "VMess")
 
 -- Settings - Dokodemo-door
 o = s:option(Value, "s_dokodemo_door_address", "%s - %s" % { "Dokodemo-door", translate("Address") })
@@ -230,6 +230,7 @@ o:value("tls", "TLS")
 -- Stream Settings - TLS
 o = s:option(Value, "ss_tls_server_name", "%s - %s" % { "TLS", translate("Server name") })
 o:depends("ss_security", "tls")
+o.datatype = "host"
 
 o = s:option(Value, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
 o:depends("ss_security", "tls")
@@ -284,13 +285,13 @@ o:depends("ss_tcp_header_type", "http")
 o = s:option(DynamicList, "ss_tcp_header_request_headers", "%s - %s" % { "TCP", translate("Request headers") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_version", "%s - %s" % { "TCP", translate("HTTP response version") })
+o = s:option(Value, "ss_tcp_header_response_version", "%s - %s" % { "TCP", translate("HTTP response version") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_status", "%s - %s" % { "TCP", translate("HTTP response status") })
+o = s:option(Value, "ss_tcp_header_response_status", "%s - %s" % { "TCP", translate("HTTP response status") })
 o:depends("ss_tcp_header_type", "http")
 
-o = s:option(DynamicList, "ss_tcp_header_response_reason", "%s - %s" % { "TCP", translate("HTTP response reason") })
+o = s:option(Value, "ss_tcp_header_response_reason", "%s - %s" % { "TCP", translate("HTTP response reason") })
 o:depends("ss_tcp_header_type", "http")
 
 o = s:option(DynamicList, "ss_tcp_header_response_headers", "%s - %s" % { "TCP", translate("Response headers") })
@@ -322,10 +323,12 @@ o:depends("ss_network", "kcp")
 
 o = s:option(Value, "ss_kcp_read_buffer_size", "%s - %s" % { "mKCP", translate("Read buffer size") })
 o:depends("ss_network", "kcp")
+o.datatype = "uinteger"
 o.placeholder = "2"
 
 o = s:option(Value, "ss_kcp_write_buffer_size", "%s - %s" % { "mKCP", translate("Write buffer size") })
 o:depends("ss_network", "kcp")
+o.datatype = "uinteger"
 o.placeholder = "2"
 
 o = s:option(ListValue, "ss_kcp_header_type", "%s - %s" % { "mKCP", translate("Header type") })
@@ -357,8 +360,9 @@ o = s:option(Value, "ss_domainsocket_path", "%s - %s" % { "Domain Socket", trans
 o:depends("ss_network", "domainsocket")
 
 -- Stream Settings - QUIC
-o = s:option(Value, "ss_quic_security", "%s - %s" % { "QUIC", translate("Security") })
+o = s:option(ListValue, "ss_quic_security", "%s - %s" % { "QUIC", translate("Security") })
 o:depends("ss_network", "quic")
+o:value("")
 o:value("none", translate("None"))
 o:value("aes-128-gcm")
 o:value("chacha20-poly1305")
