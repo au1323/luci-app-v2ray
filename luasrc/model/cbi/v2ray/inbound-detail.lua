@@ -5,7 +5,6 @@ local dsp = require "luci.dispatcher"
 local nixio = require "nixio"
 local util = require "luci.util"
 local sys = require "luci.sys"
-local v2ray = require "luci.model.v2ray"
 
 local m, s, o
 
