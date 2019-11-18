@@ -219,12 +219,12 @@ o:depends("protocol", "vmess")
 
 -- Stream Settings
 o = s:option(ListValue, "ss_network", "%s - %s" % { translate("Stream settings"), translate("Network") })
-o:value("tcp")
-o:value("kcp")
-o:value("ws")
-o:value("http")
-o:value("domainsocket")
-o:value("quic")
+o:value("tcp", "TCP")
+o:value("kcp", "mKCP")
+o:value("ws", "WebSocket")
+o:value("http", "HTTP/2")
+o:value("domainsocket", "Domain Socket")
+o:value("quic", "QUIC")
 
 o = s:option(ListValue, "ss_security", "%s - %s" % { translate("Stream settings"), translate("Security") })
 o:value("none", translate("None"))

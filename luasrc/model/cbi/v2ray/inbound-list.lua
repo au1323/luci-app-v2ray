@@ -57,15 +57,14 @@ o.cfgvalue = function (...)
 	return Value.cfgvalue(...) or "?"
 end
 
-o = s:option(DummyValue, "tag", translate("Tag"))
+o = s:option(DummyValue, "ss_network", translate("Network"))
 o.cfgvalue = function (...)
 	return Value.cfgvalue(...) or "?"
 end
 
-o = s:option(DummyValue, "transparent_proxy_enabled", translate("Transparent Proxy"))
+o = s:option(DummyValue, "tag", translate("Tag"))
 o.cfgvalue = function (...)
-	local v = Value.cfgvalue(...)
-	return v == "1" and translate("Yes") or translate("No")
+	return Value.cfgvalue(...) or "?"
 end
 
 return m
