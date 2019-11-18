@@ -119,8 +119,9 @@ o.datatype = "host"
 o = s:option(Value, "s_shadowsocks_port", "%s - %s" % { "Shadowsocks", translate("Port") } )
 o:depends("protocol", "shadowsocks")
 
-o = s:option(Value, "s_shadowsocks_method", "%s - %s" % { "Shadowsocks", translate("Method") } )
+o = s:option(ListValue, "s_shadowsocks_method", "%s - %s" % { "Shadowsocks", translate("Method") } )
 o:depends("protocol", "shadowsocks")
+o:value("")
 o:value("aes-256-cfb")
 o:value("aes-128-cfb")
 o:value("chacha20")
@@ -206,7 +207,7 @@ o:value("tls", "TLS")
 o = s:option(Value, "ss_tls_server_name", "%s - %s" % { "TLS", translate("Server name") })
 o:depends("ss_security", "tls")
 
-o = s:option(DynamicList, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
+o = s:option(Value, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
 o:depends("ss_security", "tls")
 o.placeholder = "http/1.1"
 

@@ -62,7 +62,7 @@ o:depends("protocol", "dokodemo-door")
 o.datatype = "host"
 
 o = s:option(Value, "s_dokodemo_door_port", "%s - %s" % { "Dokodemo-door", translate("Port") })
-o:depends("s_dokodemo_door_address")
+o:depends("protocol", "dokodemo-door")
 o.datatype = "port"
 
 o = s:option(MultiValue, "s_dokodemo_door_network", "%s - %s" % { "Dokodemo-door", translate("Network") },
@@ -125,8 +125,9 @@ o.datatype = "uinteger"
 o = s:option(Value, "s_shadowsocks_email", "%s - %s" % { "Shadowsocks", translate("Email") })
 o:depends("protocol", "shadowsocks")
 
-o = s:option(Value, "s_shadowsocks_method", "%s - %s" % { "Shadowsocks", translate("Method") })
+o = s:option(ListValue, "s_shadowsocks_method", "%s - %s" % { "Shadowsocks", translate("Method") })
 o:depends("protocol", "shadowsocks")
+o:value("")
 o:value("aes-256-cfb")
 o:value("aes-128-cfb")
 o:value("chacha20")
@@ -153,8 +154,9 @@ o:value("tcp")
 o:value("udp")
 
 -- Settings - Socks
-o = s:option(Value, "s_socks_auth", "%s - %s" % { "Socks", translate("Auth") })
+o = s:option(ListValue, "s_socks_auth", "%s - %s" % { "Socks", translate("Auth") })
 o:depends("protocol", "socks")
+o:value("")
 o:value("noauth", translate("No Auth"))
 o:value("password", translate("Password"))
 
@@ -229,7 +231,7 @@ o:value("tls", "TLS")
 o = s:option(Value, "ss_tls_server_name", "%s - %s" % { "TLS", translate("Server name") })
 o:depends("ss_security", "tls")
 
-o = s:option(DynamicList, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
+o = s:option(Value, "ss_tls_alpn", "%s - %s" % { "TLS", "ALPN" })
 o:depends("ss_security", "tls")
 o.placeholder = "http/1.1"
 
