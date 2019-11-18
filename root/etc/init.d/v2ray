@@ -270,7 +270,7 @@ inbound_section_validate() {
 		'ss_tls_allow_insecure:bool:0' \
 		'ss_tls_allow_insecure_ciphers:bool:0' \
 		'ss_tls_disable_system_root:bool:0' \
-		'ss_tls_cert_usage:string' \
+		'ss_tls_cert_usage:or("encipherment", "verify", "issue")' \
 		'ss_tls_cert_fiile:string' \
 		'ss_tls_key_file:string' \
 		'ss_tcp_header_type:or("none", "http")' \
@@ -292,14 +292,15 @@ inbound_section_validate() {
 		'ss_kcp_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
 		'ss_websocket_path:string' \
 		'ss_websocket_headers:list(string)' \
-		'ss_http_host:list(string)' \
+		'ss_http_host:list(host)' \
 		'ss_http_path:string' \
 		'ss_domainsocket_path:string' \
-		'ss_quic_security:string' \
+		'ss_quic_security:or("aes-128-gcm", "chacha20-poly1305", "none")' \
 		'ss_quic_key:string' \
 		'ss_quic_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
+		'ss_sockopt_mark:uinteger:255'
 		'ss_sockopt_tcp_fast_open:bool:0' \
-		'ss_sockopt_tproxy:string' \
+		'ss_sockopt_tproxy:or("redirect", "tproxy", "off")' \
 		'tag:string' \
 		'sniffing_enabled:bool:0' \
 		'sniffing_dest_override:list(or("http", "tls"))' \
@@ -313,7 +314,71 @@ outbound_section_validate() {
 		'send_through:ipaddr:0.0.0.0' \
 		'protocol:string' \
 		'tag:string' \
-		'settings:string' \
+		's_blackhole_reponse_type:or("none", "http")' \
+		's_dns_network:or("tcp", "udp")' \
+		's_dns_address:host' \
+		's_dns_port:port' \
+		's_freedom_domain_strategy:or("AsIs", "UseIP", "UseIPv4", "UseIPv6")' \
+		's_freedom_redirect:string' \
+		's_freedom_user_level:uinteger' \
+		's_http_server_address:host' \
+		's_http_server_port:port' \
+		's_http_account_user:string' \
+		's_http_account_pass:string' \
+		's_shadowsocks_email:string' \
+		's_shadowsocks_address:host' \
+		's_shadowsocks_port:port' \
+		's_shadowsocks_method:string' \
+		's_shadowsocks_password:string' \
+		's_shadowsocks_level:uinteger' \
+		's_shadowsocks_ota:bool:0' \
+		's_socks_server_address:host' \
+		's_socks_server_port:port' \
+		's_socks_account_user:string' \
+		's_socks_account_pass:string' \
+		's_socks_user_level:uinteger' \
+		's_vmess_address:host' \
+		's_vmess_port:port' \
+		's_vmess_user_id:string' \
+		's_vmess_user_alter_id:and("uinteger", max(65535))' \
+		's_vmess_user_security:or("auto", "aes-128-gcm", "chacha20-poly1305", "none")' \
+		's_vmess_user_level:uinteger' \
+		'ss_network:or("tcp", "kcp", "ws", "http", "domainsocket", "quic")' \
+		'ss_security:or("none", "tls")' \
+		'ss_tls_server_name:host' \
+		'ss_tls_alpn:string' \
+		'ss_tls_allow_insecure:bool:0' \
+		'ss_tls_allow_insecure_ciphers:bool:0' \
+		'ss_tls_disable_system_root:bool:0' \
+		'ss_tls_cert_usage:or("encipherment", "verify", "issue")' \
+		'ss_tls_cert_fiile:string' \
+		'ss_tls_key_file:string' \
+		'ss_tcp_header_type:or("none", "http")' \
+		'ss_tcp_header_request_version:string' \
+		'ss_tcp_header_request_method:string' \
+		'ss_tcp_header_request_path:string' \
+		'ss_tcp_header_request_headers:list(string)' \
+		'ss_tcp_header_response_version:string' \
+		'ss_tcp_header_response_status:string' \
+		'ss_tcp_header_response_reason:string' \
+		'ss_tcp_header_response_headers:list(string)' \
+		'ss_kcp_mtu:and(min(576), max(1460))' \
+		'ss_kcp_tti:and(min(10), max(100))' \
+		'ss_kcp_uplink_capacity:uinteger' \
+		'ss_kcp_downlink_capacity:uinteger' \
+		'ss_kcp_congestion:bool:0' \
+		'ss_kcp_read_buffer_size:uinteger' \
+		'ss_kcp_write_buffer_size:uinteger' \
+		'ss_kcp_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
+		'ss_websocket_path:string' \
+		'ss_websocket_headers:list(string)' \
+		'ss_http_host:list(host)' \
+		'ss_http_path:string' \
+		'ss_domainsocket_path:string' \
+		'ss_quic_security:or("aes-128-gcm", "chacha20-poly1305", "none")' \
+		'ss_quic_key:string' \
+		'ss_quic_header_type:or("none", "srtp", "utp", "wechat-video", "dtls", "wireguard")' \
+		'ss_sockopt_tcp_fast_open:bool:0' \
 		'stream_settings:string' \
 		'proxy_settings_tag:string' \
 		'mux_enabled:bool:0' \

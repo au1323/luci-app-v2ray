@@ -66,7 +66,7 @@ o:depends("protocol", "dokodemo-door")
 o.datatype = "port"
 
 o = s:option(MultiValue, "s_dokodemo_door_network", "%s - %s" % { "Dokodemo-door", translate("Network") },
-	translate("If transparent proxy enabled on this inbound, current option will be ignored."))
+	translate("If transparent proxy enabled on current inbound, this option will be ignored."))
 o:depends("protocol", "dokodemo-door")
 o:value("tcp")
 o:value("udp")
@@ -78,7 +78,7 @@ o.datatype = "uinteger"
 o.placeholder = "300"
 
 o = s:option(Flag, "s_dokodemo_door_follow_redirect", "%s - %s" % { "Dokodemo-door", translate("Follow redirect") },
-	translate("If transparent proxy enabled on this inbound, current option will be ignored."))
+	translate("If transparent proxy enabled on current inbound, this option will be ignored."))
 o:depends("protocol", "dokodemo-door")
 
 o = s:option(Value, "s_dokodemo_door_user_level", "%s - %s" % { "Dokodemo-door", translate("User level") },

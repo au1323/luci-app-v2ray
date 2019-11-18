@@ -118,6 +118,7 @@ o.datatype = "host"
 
 o = s:option(Value, "s_shadowsocks_port", "%s - %s" % { "Shadowsocks", translate("Port") } )
 o:depends("protocol", "shadowsocks")
+o.datatype = "port"
 
 o = s:option(ListValue, "s_shadowsocks_method", "%s - %s" % { "Shadowsocks", translate("Method") } )
 o:depends("protocol", "shadowsocks")
@@ -145,6 +146,7 @@ o:depends("protocol", "shadowsocks")
 -- Settings - Socks
 o = s:option(Value, "s_socks_server_address", "%s - %s" % { "Socks", translate("Server address") })
 o:depends("protocol", "socks")
+o.datatype = "host"
 
 o = s:option(Value, "s_socks_server_port", "%s - %s" % { "Socks", translate("Server port") })
 o:depends("protocol", "socks")
@@ -175,6 +177,7 @@ o:depends("protocol", "vmess")
 
 o = s:option(Value, "s_vmess_user_alter_id", "%s - %s" % { "VMess", translate("Alter ID") })
 o:depends("protocol", "vmess")
+o.datatype = "and('uinteger', max(65535))"
 
 o = s:option(ListValue, "s_vmess_user_security", "%s - %s" % { "VMess", translate("Security") })
 o:depends("protocol", "vmess")
@@ -298,10 +301,12 @@ o:depends("ss_network", "kcp")
 
 o = s:option(Value, "ss_kcp_read_buffer_size", "%s - %s" % { "mKCP", translate("Read buffer size") })
 o:depends("ss_network", "kcp")
+o.datatype = "uinteger"
 o.placeholder = "2"
 
 o = s:option(Value, "ss_kcp_write_buffer_size", "%s - %s" % { "mKCP", translate("Write buffer size") })
 o:depends("ss_network", "kcp")
+o.datatype = "uinteger"
 o.placeholder = "2"
 
 o = s:option(ListValue, "ss_kcp_header_type", "%s - %s" % { "mKCP", translate("Header type") })
@@ -333,7 +338,7 @@ o = s:option(Value, "ss_domainsocket_path", "%s - %s" % { "Domain Socket", trans
 o:depends("ss_network", "domainsocket")
 
 -- Stream Settings - QUIC
-o = s:option(Value, "ss_quic_security", "%s - %s" % { "QUIC", translate("Security") })
+o = s:option(ListValue, "ss_quic_security", "%s - %s" % { "QUIC", translate("Security") })
 o:depends("ss_network", "quic")
 o:value("")
 o:value("none", translate("None"))
