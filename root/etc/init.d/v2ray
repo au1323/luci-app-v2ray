@@ -909,6 +909,75 @@ add_inbound_setting() {
 	json_add_int "port" "$port"
 	json_add_string "protocol" "$protocol"
 
+	case "${protocol:-x}"
+		"dokodemo-door")
+			(
+				json_add_object "settings"
+
+				if [ -n "$port" ] && [ "x$port" = "x$TRANSPARENT_PROXY_PORT" ] ; then
+					local settings_network="tcp"
+
+					test -n "$TRANSPARENT_PROXY_ADDITION" && \
+						settings_network="$settings_network,udp"
+
+					json_add_boolean "followRedirect" "1"
+					json_add_string "network" "$settings_network"
+				else
+					test -n "$s_dokodemo_door_address" && \
+						json_add_string "address" "$s_dokodemo_door_address"
+					test -n "$port" && \
+						json_add_int "port" "$s_dokodemo_door_port"
+					test -n "$s_dokodemo_door_network" && \
+						json_add_string "network" "$(echo "$s_dokodemo_door_network" | tr -s ' ' ',')"
+				fi
+
+				test -n "$s_dokodemo_door_timeout" && \
+					json_add_int "timeout" "$s_dokodemo_door_timeout"
+
+				if [ "x$s_dokodemo_door_follow_redirect" = "x1" ] ; then
+					json_add_boolean "followRedirect" "1"
+				fi
+				test -n "$s_dokodemo_door_user_level" && \
+					json_add_int "userLevel" "$s_dokodemo_door_user_level"
+
+				json_close_object
+			)
+			;;
+		"http")
+			(
+				json_add_object "settings"
+
+				if [ -m "$s_http_account_user" ] ; then
+					json_add_array "accounts"
+					json_add_object
+					json_add_string "user" "$s_http_account_user"
+					json_add_string "pass" "$s_http_account_pass"
+					json_close_object
+					json_close_array
+				fi
+
+				if [ "x$s_http_allow_transparent" = "x1" ] ; then
+					json_add_boolean "allowTransparent" "1"
+				fi
+
+				test -n "$s_http_timeout" && \
+					json_add_int "timeout" "$s_http_timeout"
+				test -n "$s_http_user_level" && \
+					json_add_int "userLevel" "$s_http_user_level"
+
+				json_close_object
+			)
+			;;
+		"mtproto")
+			;;
+		"shadowsocks")
+			;;
+		"socks")
+			;;
+		"vmess")
+			;;
+	esac
+
 	test -n "$tag" && \
 		json_add_string "tag" "$tag"
 
@@ -931,42 +1000,6 @@ add_inbound_setting() {
 			json_add_int "refresh" "$allocate_refresh"
 		test -n "$allocate_concurrency" &&	\
 			json_add_int "concurrency" "$allocate_concurrency"
-		json_close_object
-	fi
-
-	add_redirect_settings() {
-		if [ "x$protocol" = "xdokodemo-door" ] && \
-			[ -n "$port" ] && [ "x$port" = "x$TRANSPARENT_PROXY_PORT" ] ; then
-			local settings_network="tcp"
-
-			test -n "$TRANSPARENT_PROXY_ADDITION" && \
-				settings_network="$settings_network,udp"
-
-			json_add_boolean "followRedirect" "1"
-			json_add_string "network" "$settings_network"
-		fi
-	}
-
-	local settings_json
-	settings_json="$(get_json_content "setting" "$settings")"
-
-	if [ -n "$settings_json" ] ; then
-		json_add_object "settings"
-		eval "$(get_commands_from_json "$settings_json")"
-		add_redirect_settings
-		json_close_object
-	else
-		json_add_object "settings"
-		add_redirect_settings
-		json_close_object
-	fi
-
-	local stream_settings_json
-	stream_settings_json="$(get_json_content "stream_setting" "$stream_settings")"
-
-	if [ -n "$stream_settings_json" ] ; then
-		json_add_object "streamSettings"
-		eval "$(get_commands_from_json "$stream_settings_json")"
 		json_close_object
 	fi
 
