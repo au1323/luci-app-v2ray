@@ -360,11 +360,11 @@ o:value("dtls", "DTLS 1.2")
 o:value("wireguard", "WireGuard")
 
 -- Stream Settings - Socket Options
-o = s:option(Value, "ss_sockopt_mark", "%s - %s" % { translate("Socket options"), translate("Mark") },
+o = s:option(Value, "ss_sockopt_mark", "%s - %s" % { translate("Sockopt"), translate("Mark") },
 	translate("If transparent proxy is enabled, this option is ignored and will be set to 255."))
 o.placeholder = "255"
 
-o = s:option(Flag, "ss_sockopt_tcp_fast_open", "%s - %s" % { translate("Socket options"), translate("TCP fast open") })
+o = s:option(Flag, "ss_sockopt_tcp_fast_open", "%s - %s" % { translate("Sockopt"), translate("TCP fast open") })
 
 -- Other Settings
 o = s:option(Value, "tag", translate("Tag"))
