@@ -70,6 +70,7 @@ o = s:option(MultiValue, "s_dokodemo_door_network", "%s - %s" % { "Dokodemo-door
 o:depends("protocol", "dokodemo-door")
 o:value("tcp")
 o:value("udp")
+o.default = "tcp"
 
 o = s:option(Value, "s_dokodemo_door_timeout", "%s - %s" % { "Dokodemo-door", translate("Timeout") },
 	translate("Time limit for inbound data(seconds)"))
@@ -152,6 +153,7 @@ o = s:option(MultiValue, "s_shadowsocks_network", "%s - %s" % { "Shadowsocks", t
 o:depends("protocol", "shadowsocks")
 o:value("tcp")
 o:value("udp")
+o.default = "tcp"
 
 -- Settings - Socks
 o = s:option(ListValue, "s_socks_auth", "%s - %s" % { "Socks", translate("Auth") })
@@ -159,6 +161,7 @@ o:depends("protocol", "socks")
 o:value("")
 o:value("noauth", translate("No Auth"))
 o:value("password", translate("Password"))
+o.default = "noauth"
 
 o = s:option(Value, "s_socks_account_user", "%s - %s" % { "Socks", translate("Account user") })
 o:depends("s_socks_auth", "password")
@@ -176,6 +179,7 @@ for _, v in ipairs(local_ips) do
 	o:value(v)
 end
 o.datatype = "host"
+o.placeholder = "127.0.0.1"
 
 o = s:option(Value, "s_socks_user_level", "%s - %s" % { "Socks", translate("User level") },
 	translate("All connections share this level"))
@@ -221,6 +225,7 @@ o:value("ws", "WebSocket")
 o:value("http", "HTTP/2")
 o:value("domainsocket", "Domain Socket")
 o:value("quic", "QUIC")
+o.default = "tcp"
 
 o = s:option(ListValue, "ss_security", "%s - %s" % { translate("Stream settings"), translate("Security") })
 o:value("")
@@ -267,6 +272,7 @@ o:value("http", "HTTP")
 
 o = s:option(Value, "ss_tcp_header_request_version", "%s - %s" % { "TCP", translate("HTTP request version") })
 o:depends("ss_tcp_header_type", "http")
+o.placeholder = "1.1"
 
 o = s:option(ListValue, "ss_tcp_header_request_method", "%s - %s" % { "TCP", translate("HTTP request method") })
 o:depends("ss_tcp_header_type", "http")
@@ -278,6 +284,7 @@ o:value("DELETE")
 o:value("PUT")
 o:value("PATCH")
 o:value("OPTIONS")
+o.default = "GET"
 
 o = s:option(Value, "ss_tcp_header_request_path", "%s - %s" % { "TCP", translate("Request path") })
 o:depends("ss_tcp_header_type", "http")
@@ -287,12 +294,15 @@ o:depends("ss_tcp_header_type", "http")
 
 o = s:option(Value, "ss_tcp_header_response_version", "%s - %s" % { "TCP", translate("HTTP response version") })
 o:depends("ss_tcp_header_type", "http")
+o.placeholder = "1.1"
 
 o = s:option(Value, "ss_tcp_header_response_status", "%s - %s" % { "TCP", translate("HTTP response status") })
 o:depends("ss_tcp_header_type", "http")
+o.placeholder = "200"
 
 o = s:option(Value, "ss_tcp_header_response_reason", "%s - %s" % { "TCP", translate("HTTP response reason") })
 o:depends("ss_tcp_header_type", "http")
+o.placeholder = "OK"
 
 o = s:option(DynamicList, "ss_tcp_header_response_headers", "%s - %s" % { "TCP", translate("Response headers") })
 o:depends("ss_tcp_header_type", "http")

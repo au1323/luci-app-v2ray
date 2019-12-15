@@ -248,7 +248,7 @@ inbound_section_validate() {
 		's_shadowsocks_password:string' \
 		's_shadowsocks_level:uinteger' \
 		's_shadowsocks_ota:bool:0' \
-		's_shadowsocks_network:list(or("tcp", "udp"))' \
+		's_shadowsocks_network:list(or("tcp", "udp")):tcp' \
 		's_socks_auth:or("noauth", "password")' \
 		's_socks_account_user:string' \
 		's_socks_account_pass:string' \
@@ -263,7 +263,7 @@ inbound_section_validate() {
 		's_vmess_default_user_level:uinteger' \
 		's_vmess_detour_to:string' \
 		's_vmess_disable_insecure_encryption:bool:0' \
-		'ss_network:or("tcp", "kcp", "ws", "http", "domainsocket", "quic")' \
+		'ss_network:or("tcp", "kcp", "ws", "http", "domainsocket", "quic"):tcp' \
 		'ss_security:or("none", "tls")' \
 		'ss_tls_server_name:host' \
 		'ss_tls_alpn:string' \
@@ -275,7 +275,7 @@ inbound_section_validate() {
 		'ss_tls_key_file:string' \
 		'ss_tcp_header_type:or("none", "http")' \
 		'ss_tcp_header_request_version:string' \
-		'ss_tcp_header_request_method:string' \
+		'ss_tcp_header_request_method:string:GET' \
 		'ss_tcp_header_request_path:string' \
 		'ss_tcp_header_request_headers:list(string)' \
 		'ss_tcp_header_response_version:string' \
@@ -947,7 +947,7 @@ add_inbound_setting() {
 			(
 				json_add_object "settings"
 
-				if [ -m "$s_http_account_user" ] ; then
+				if [ -n "$s_http_account_user" ] ; then
 					json_add_array "accounts"
 					json_add_object
 					json_add_string "user" "$s_http_account_user"
@@ -969,14 +969,212 @@ add_inbound_setting() {
 			)
 			;;
 		"mtproto")
+			(
+				json_add_object "settings"
+
+				if [ -n "$s_mtproto_user_email" ] ; then
+					json_add_array "users"
+					json_add_object ""
+					json_add_string "email" "$s_mtproto_user_email"
+					json_add_string "secret" "$s_mtproto_user_secret"
+					test -n "$s_mtproto_user_level" && \
+						json_add_int "level" "$s_mtproto_user_level"
+					json_close_object
+					json_close_array
+				fi
+
+				json_close_object
+			)
 			;;
 		"shadowsocks")
+			(
+				json_add_object "settings"
+
+				json_add_string "method" "$s_shadowsocks_method"
+				json_add_string "password" "$s_shadowsocks_password"
+				test -n "$s_shadowsocks_email" && \
+					json_add_string "email" "$s_shadowsocks_email"
+				test -n "$s_shadowsocks_level" && \
+					json_add_int "level" "$s_shadowsocks_level"
+				test -n "$s_shadowsocks_ota" && \
+					json_add_boolean "ota" "$s_shadowsocks_ota"
+				json_add_string "network" "$(echo "$s_shadowsocks_network" | tr -s ' ' ',')"
+
+				json_close_object
+			)
 			;;
 		"socks")
+			(
+				json_add_object "settings"
+
+				json_add_string "auth" "$s_socks_auth"
+				if [ -n "$s_socks_account_user" ] ; then
+					json_add_array "accounts"
+					json_add_object ""
+					json_add_string "user" "$s_socks_account_user"
+					json_add_string "pass" "$s_socks_account_pass"
+					json_close_object
+					json_close_array
+				fi
+				test -n "$s_socks_udp" && \
+					json_add_boolean "udp" "$s_socks_udp"
+				test -n "$s_socks_ip" && \
+					json_add_string "ip" "$s_socks_ip"
+				test -n "$s_socks_user_level" && \
+					json_add_int "userLevel" "$s_socks_user_level"
+
+				json_close_object
+			)
 			;;
 		"vmess")
+			(
+				json_add_object "settings"
+
+				if [ -n "$s_vmess_client_id" ] ; then
+					json_add_array "clients"
+					json_add_object ""
+					json_add_string "id" "$s_vmess_client_id"
+					test -n "$s_vmess_client_alter_id" && \
+						json_add_string "alterId" "$s_vmess_client_alter_id"
+					test -n "$s_vmess_client_email" && \
+						json_add_string "email" "$s_vmess_client_email"
+					test -n "$s_vmess_client_user_level" && \
+						json_add_int "level" "$s_vmess_client_user_level"
+					json_close_object
+					json_close_array
+				fi
+
+				json_add_object "default"
+				test -n "$s_vmess_default_alter_id" && \
+					json_add_int "alterId" "$s_vmess_default_alter_id"
+				test -n "$s_vmess_default_user_level" && \
+					json_add_int "level" "$s_vmess_default_user_level"
+				json_close_object
+
+				if [ -n "$s_vmess_detour_to" ] ; then
+					json_add_object "detour"
+					json_add_string "to" "$s_vmess_detour_to"
+					json_close_object
+				fi
+
+				test -n "$s_vmess_disable_insecure_encryption" && \
+					json_add_boolean "disableInsecureEncryption" "$s_vmess_disable_insecure_encryption"
+
+				json_close_object
+			)
 			;;
 	esac
+
+	json_add_object "streamSettings"
+
+	json_add_string "network" "$ss_network"
+	test -n "$ss_security" && \
+		json_add_string "security" "$ss_security"
+
+	if [ "x$ss_security" = "xtls" ] ; then
+		json_add_object "tlsSettings"
+
+		json_add_string "serverName" "$ss_tls_server_name"
+		if [ -n "$ss_tls_alpn" ] ; then
+			json_add_array "alpn"
+			json_add_string "" "$ss_tls_alpn"
+			json_close_array
+		fi
+		test -n "$ss_tls_allow_insecure" && \
+			json_add_boolean "allowInsecure" "$ss_tls_allow_insecure"
+		test -n "$ss_tls_allow_insecure_ciphers" && \
+			json_add_boolean "allowInsecureCiphers" "$ss_tls_allow_insecure_ciphers"
+		test -n "$ss_tls_disable_system_root" && \
+			json_add_boolean "disableSystemRoot" "$ss_tls_disable_system_root"
+
+		json_add_array "certificates"
+		if [ -n "$ss_tls_cert_fiile" ] ; then
+			json_add_string "certificateFile" "$ss_tls_cert_fiile"
+			json_add_string "keyFile" "$ss_tls_key_file"
+			test -n "$ss_tls_cert_usage" && \
+				json_add_string "usage" "$ss_tls_cert_usage"
+		fi
+		json_close_array
+
+		json_close_object
+	fi
+
+	case "${ss_network:-x}"
+		"tcp")
+		(
+			json_add_object "tcpSettings"
+			if [ -n "$ss_tcp_header_type" ] ; then
+				json_add_object "header"
+				json_add_string "type" "$ss_tcp_header_type"
+
+				if [ "$ss_tcp_header_type" = "http" ] ; then
+					json_add_object "request"
+					test -n "$ss_tcp_header_request_version" && \
+						json_add_string "version" "$ss_tcp_header_request_version"
+					json_add_string "method" "$ss_tcp_header_request_method"
+
+					if [ -n "$ss_tcp_header_request_path" ] ; then
+						json_add_array "path"
+						json_add_string "" "$ss_tcp_header_request_path"
+						json_close_array
+					fi
+
+					if [ -n "$ss_tcp_header_request_headers" ] ; then
+						json_add_object "headers"
+
+						local h
+						for h in $ss_tcp_header_request_headers ; do
+							local name="$(echo "$h" | cut -d'=' -f1)"
+							local value="$(echo "$h" | cut -d'-' -f2)"
+
+							if [ -n "$name" ] && [ -n "$value" ] ; then
+								json_add_array "$name"
+								json_add_string "" "$value"
+								json_close_array
+							fi
+						done
+
+						json_close_object
+					fi
+
+					json_close_object # request
+
+					json_add_object "response"
+					test -n "$ss_tcp_header_response_version" && \
+						json_add_string "version" "$ss_tcp_header_response_version"
+					test -n "$ss_tcp_header_response_status" && \
+						json_add_string "status" "$ss_tcp_header_response_status"
+					test -n "$ss_tcp_header_response_reason" && \
+						json_add_string "reason" "$ss_tcp_header_response_reason"
+
+					if [ -n "$ss_tcp_header_response_headers" ] ; then
+						json_add_object "headers"
+
+						local h
+						for h in $ss_tcp_header_response_headers ; do
+							local name="$(echo "$h" | cut -d'=' -f1)"
+							local value="$(echo "$h" | cut -d'-' -f2)"
+
+							if [ -n "$name" ] && [ -n "$value" ] ; then
+								json_add_array "$name"
+								json_add_string "" "$value"
+								json_close_array
+							fi
+						done
+
+						json_close_object
+					fi
+
+					json_close_object # response
+				fi
+				json_close_object
+			fi
+			json_close_object
+		)
+		;;
+	esac
+
+	json_close_object # streamSettings
 
 	test -n "$tag" && \
 		json_add_string "tag" "$tag"
